@@ -93,5 +93,16 @@ function psa () {
 function showpkg () {
     apt-cache pkgnames | grep -i "$1" | sort
     return;
+}
 
+function whoport() {
+    if [[ -n "$1" ]]; then
+        local port=$1
+        local purple="\x1B\[35m" reset="\x1B\[m"
+        echo "Information for process running on port $port"
+        local PID=$(lsof -i:$port -t)
+        ps -p ${PID} -o pid,vsz=MEMORY -o user,group=GROUP -o comm,args=ARGS
+    else
+        echo "Usage: whoport <port_number>"
+    fi
 }
